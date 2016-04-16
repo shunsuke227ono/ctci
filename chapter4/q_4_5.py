@@ -36,8 +36,6 @@ class IsBST(object):
     def __init__(self):
         self.current = None
         pass
-    def is_bst(self):
-        pass
     def check_in_order(self, root):
         if root == None:
             return True
@@ -58,17 +56,32 @@ class IsBST(object):
 
         return True
 
-    def check_min_max(self):
-        pass
+    def check_min_max(self, root, current_min=None, current_max=None):
+        if root == None:
+            return True
+
+        if current_min != None:
+            if root.value < current_min:
+                return False
+        if current_max != None:
+            if root.value > current_max:
+                return False
+        if not self.check_min_max(root.left, current_min, root.value):
+            return False
+        if not self.check_min_max(root.right, root.value, current_max):
+            return False
+
+        return True
+
+
 
 def test():
     sorted_list = [1,2,3,4,5,5,6,6,7,8,8,10,100,1000]
     cbst = CreateBST(sorted_list)
     root = cbst.create_bst(0, len(sorted_list)-1)
     cbst.print_tree(root)
-    print root
     ibst = IsBST()
-    print ibst.check_in_order(root)
+    print ibst.check_min_max(root, None, None)
 
 if __name__ == "__main__":
     test()
